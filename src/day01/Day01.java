@@ -15,7 +15,7 @@ public class Day01 {
         }
     }
 
-    private static void solve() throws FileNotFoundException {
+    private void solve() throws FileNotFoundException {
         File input = new File("src/day01/input.txt");
             Scanner scanner = new Scanner(input);
 

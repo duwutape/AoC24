@@ -7,9 +7,9 @@ import java.util.Scanner;
 
 public class Day02 {
 
-    private static int countSafe = 0;
-    private static int countSafeRemove = 0;
-    private static int failIndex;
+    private int countSafe = 0;
+    private int countSafeRemove = 0;
+    private int failIndex;
 
     public Day02() {
         try {
@@ -19,7 +19,7 @@ public class Day02 {
         }
     }
 
-    private static void solve() throws FileNotFoundException {
+    private void solve() throws FileNotFoundException {
         File input = new File("src/day02/input.txt");
         Scanner scanner = new Scanner(input);
 
@@ -56,7 +56,7 @@ public class Day02 {
         System.out.println(countSafeRemove);
     }
 
-    private static int[] remove(int[] data, int index) {
+    private int[] remove(int[] data, int index) {
         int[] newData = new int[data.length - 1];
         int j = 0;
         for (int i = 0; i < data.length; i++) {
@@ -69,7 +69,7 @@ public class Day02 {
         return newData;
     }
 
-    private static boolean check(int[] report) {
+    private boolean check(int[] report) {
         boolean increasing;
 
         if (report[0] < report[1] && Math.abs(report[0] - report[1]) <= 3) {
