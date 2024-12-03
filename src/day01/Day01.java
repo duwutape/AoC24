@@ -3,7 +3,6 @@ package day01;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Scanner;
 
@@ -42,7 +41,7 @@ public class Day01 {
             int count = 0;
             for (int numRight : right){
                 if (numLeft == numRight){
-                    count ++;
+                    count++;
                 }
             }
             sum_sim += numLeft * count;
