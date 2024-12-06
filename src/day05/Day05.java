@@ -3,11 +3,13 @@ package day05;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Scanner;
 
 public class Day05 {
+
+    private int count = 1177;
+
     public Day05() {
         try {
             solve();
@@ -17,7 +19,7 @@ public class Day05 {
     }
 
     private void solve() throws FileNotFoundException {
-        File input = new File("src/day05/test.txt");
+        File input = new File("src/day05/input.txt");
         Scanner scanner = new Scanner(input);
         boolean readInstructions = true;
 
@@ -54,56 +56,72 @@ public class Day05 {
             }
         }
 
-        int count = 0;
+        int resCorrect = 0;
+        int resIncorrect = 0;
         for (ArrayList<Integer> line : data) {
+            count++;
             if (checkInstructions(instructions, line)) {
-                count++;
+                resCorrect += line.get(line.size() / 2);
+            } else {
+                if (count == 1178) {
+                    count++;
+                    count--;
+                }
+                ArrayList<Integer> rearrangedLine = new ArrayList<>();
+                rearrangedLine = rearrange(instructions, line);
+                resIncorrect += rearrangedLine.get(rearrangedLine.size() / 2);
             }
         }
 
-        System.out.println(count);
+        System.out.println(resCorrect);
+        System.out.println(resIncorrect);
     }
+
 
     private boolean checkInstructions(HashMap<Integer, ArrayList<Integer>> instructions, ArrayList<Integer> line) {
         for (int num : line) {
-            if (!instructions.containsKey(num)) {
-                return true;
-            } else {
-                ArrayList<Integer> values = instructions.get(num);
-                for (int value : values){
-                    if (!line.contains(value)){
-                        return true;
-                    } else {
-                        checkInstructions()
+            if (instructions.containsKey(num)) {
+                for (int value : instructions.get(num)) {
+                    if (line.contains(value) && line.indexOf(value) < line.indexOf(num)) {
+
+                    } else if (line.contains(value) && line.indexOf(value) > line.indexOf(num)) {
+                        return false;
                     }
                 }
-                if ()
-
-
-                ArrayList<Integer> subLine = new ArrayList<>();
-                for (int i = 0; i < line.indexOf(num); i++) {
-                    subLine.add(line.get(i));
-                }
-                ArrayList<Integer> checkKeys = instructions.get(num);
-                return checkInstructions(instructions,checkKeys, subLine);
             }
         }
-        return false;
+        return true;
     }
 
-    private boolean checkInstructions(HashMap<Integer, ArrayList<Integer>> instructions, ArrayList<Integer> keys, ArrayList<Integer> line) {
-        for (int key : keys) {
-            if(line.contains(key)){
-                ArrayList<Integer> subLine = new ArrayList<>();
-                for (int i = 0; i < line.indexOf(key); i++) {
-                    subLine.add(line.get(i));
-                }
-                ArrayList<Integer> checkKeys = instructions.get(key);
-                return checkInstructions(instructions,checkKeys, subLine);
+    private ArrayList<Integer> rearrange(HashMap<Integer, ArrayList<Integer>> instructions, ArrayList<Integer> data) {
+        ArrayList<Integer> newData = new ArrayList<>();
+
+        for (int num : data) {
+            if (!instructions.containsKey(num)) {
+                newData.add(0, num);
             } else {
-                return false;
+                int minIndex = -1;
+                int maxIndex = newData.size();
+                for (int instruction : instructions.get(num)) {
+                    if (newData.contains(instruction)) {
+                        minIndex = Math.max(minIndex, newData.indexOf(instruction));
+                    }
+                }
+                for (int newNum : newData) {
+                    if (instructions.get(newNum).contains(num)) {
+                        maxIndex += Math.min(maxIndex, newData.indexOf(newNum));
+                    }
+                }
+                if (minIndex + 1 <= newData.size() && minIndex+1 <= maxIndex) {
+                    newData.add(minIndex + 1, num);
+                } else if (maxIndex < newData.size()){
+                    newData.add(num,maxIndex);
+                } else {
+                    newData.add(num);
+                }
             }
         }
-        return false;
+
+        return newData;
     }
 }
