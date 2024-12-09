@@ -8,6 +8,10 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Day06 {
+    public static void main(String[] args) {
+        new Day06();
+    }
+
     public Day06() {
         try {
             solve();
@@ -44,6 +48,23 @@ public class Day06 {
         }
 
         int count = createPath(data, x, y);
+
+        File output = new File("src/day06/output.txt");
+        try {
+            output.createNewFile();
+            FileWriter writer = new FileWriter(output);
+
+            for (char[] row : data) {
+                writer.write(row);
+                writer.write("\n");
+            }
+            writer.close();
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+
         int countObstacles = part2(dataPart2, x, y);
 
         System.out.println(count);
@@ -70,7 +91,7 @@ public class Day06 {
 
         while (inBounds) {
             step++;
-            if (step >= data.size()*data.get(0).length) {
+            if (step >= data.size() * data.get(0).length) {
                 return -1;
             }
 
@@ -206,10 +227,10 @@ public class Day06 {
 
         for (int i = 0; i < outputPart1.size(); i++) {
             for (int j = 0; j < outputPart1.get(i).length; j++) {
-                if (outputPart1.get(i)[j]=='X' && data.get(i)[j]=='.'){
+                if (outputPart1.get(i)[j] == 'X' && data.get(i)[j] == '.') {
                     ArrayList<char[]> copy = copy(data);
                     copy.get(i)[j] = '#';
-                    if(createPath(copy,x,y) == -1){
+                    if (createPath(copy, x, y) == -1) {
                         count++;
                     }
                 }

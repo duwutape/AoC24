@@ -1,6 +1,5 @@
 package day03;
 
-import javax.swing.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -9,6 +8,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Day03 {
+    public static void main(String[] args) {
+        new Day03();
+    }
 
     public Day03() {
         try {
@@ -51,8 +53,8 @@ public class Day03 {
 
         ArrayList<int[]> newData = new ArrayList<>();
         boolean copy = true;
-        for (String string : data){
-            if (string.equals(strDont)){
+        for (String string : data) {
+            if (string.equals(strDont)) {
                 copy = false;
             } else if (string.equals(strDo)) {
                 copy = true;

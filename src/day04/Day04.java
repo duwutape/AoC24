@@ -10,6 +10,10 @@ public class Day04 {
     private int count1 = 0;
     private int count2 = 0;
 
+    public static void main(String[] args) {
+        new Day04();
+    }
+
     public Day04() {
         try {
             solve();

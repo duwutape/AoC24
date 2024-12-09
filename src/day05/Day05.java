@@ -10,6 +10,10 @@ public class Day05 {
 
     private int count = 1177;
 
+    public static void main(String[] args) {
+        new Day05();
+    }
+
     public Day05() {
         try {
             solve();
@@ -112,10 +116,10 @@ public class Day05 {
                         maxIndex += Math.min(maxIndex, newData.indexOf(newNum));
                     }
                 }
-                if (minIndex + 1 <= newData.size() && minIndex+1 <= maxIndex) {
+                if (minIndex + 1 <= newData.size() && minIndex + 1 <= maxIndex) {
                     newData.add(minIndex + 1, num);
-                } else if (maxIndex < newData.size()){
-                    newData.add(num,maxIndex);
+                } else if (maxIndex < newData.size()) {
+                    newData.add(num, maxIndex);
                 } else {
                     newData.add(num);
                 }

@@ -3,6 +3,10 @@ package day25;
 import java.io.FileNotFoundException;
 
 public class Day25 {
+    public static void main(String[] args) {
+        new Day25();
+    }
+
     public Day25() {
         try {
             solve();

@@ -7,6 +7,10 @@ import java.util.Collections;
 import java.util.Scanner;
 
 public class Day01 {
+    public static void main(String[] args) {
+        new Day01();
+    }
+
     public Day01() {
         try {
             solve();
@@ -17,13 +21,13 @@ public class Day01 {
 
     private void solve() throws FileNotFoundException {
         File input = new File("src/day01/input.txt");
-            Scanner scanner = new Scanner(input);
+        Scanner scanner = new Scanner(input);
 
         ArrayList<Integer> left = new ArrayList<>();
         ArrayList<Integer> right = new ArrayList<>();
 
-        while (scanner.hasNextLine()){
-            String line =  scanner.nextLine();
+        while (scanner.hasNextLine()) {
+            String line = scanner.nextLine();
             String[] data = line.split(" {3}");
             left.add(Integer.parseInt(data[0]));
             right.add(Integer.parseInt(data[1]));
@@ -39,8 +43,8 @@ public class Day01 {
             sum_abs += Math.abs((numLeft - right.get(left.indexOf(numLeft))));
 
             int count = 0;
-            for (int numRight : right){
-                if (numLeft == numRight){
+            for (int numRight : right) {
+                if (numLeft == numRight) {
                     count++;
                 }
             }

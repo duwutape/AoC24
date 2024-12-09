@@ -11,6 +11,10 @@ public class Day02 {
     private int countSafeRemove = 0;
     private int failIndex;
 
+    public static void main(String[] args) {
+        new Day02();
+    }
+
     public Day02() {
         try {
             solve();
