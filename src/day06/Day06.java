@@ -30,6 +30,7 @@ public class Day06 {
             data.add(chars);
         }
 
+        ArrayList<char[]> dataPart2 = copy(data);
         int x = 0;
         int y = 0;
 
@@ -43,20 +44,23 @@ public class Day06 {
         }
 
         int count = createPath(data, x, y);
-
-        File file = new File("src/day06/output.txt");
-        try {
-            FileWriter fw = new FileWriter(file);
-            for (char[] line : data) {
-                fw.write(line);
-                fw.write("\n");
-            }
-            fw.close();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        int countObstacles = part2(dataPart2, x, y);
 
         System.out.println(count);
+        System.out.println(countObstacles);
+
+    }
+
+    private ArrayList<char[]> copy(ArrayList<char[]> input) {
+        ArrayList<char[]> output = new ArrayList<>();
+        for (char[] row : input) {
+            char[] newRow = new char[row.length];
+            for (int i = 0; i < row.length; i++) {
+                newRow[i] = row[i];
+            }
+            output.add(newRow);
+        }
+        return output;
     }
 
     private int createPath(ArrayList<char[]> data, int x, int y) {
@@ -66,29 +70,9 @@ public class Day06 {
 
         while (inBounds) {
             step++;
-            //System.out.println(step);
-            /*if (step == 800) {
-                System.out.println(x + " " + y);
-
-
-                File file = new File("src/day06/output.txt");
-                try {
-                    FileWriter fw = new FileWriter(file);
-                    for (char[] line : data) {
-                        fw.write(line);
-                        fw.write("\n");
-                    }
-                    fw.close();
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-                step++;
-                step--;
-                inBounds = false;
-
+            if (step >= data.size()*data.get(0).length) {
+                return -1;
             }
-
-             */
 
             char guard = data.get(y)[x];
             char dir = guard;
@@ -98,14 +82,10 @@ public class Day06 {
             switch (guard) {
                 case '^' -> {
                     if (y - 1 >= 0) {
-                        if (data.get(y - 1)[x] == '.') {
+                        if (data.get(y - 1)[x] == '.' || data.get(y - 1)[x] == 'X') {
                             move = true;
                             y -= 1;
                             countX++;
-                        } else if (data.get(y - 1)[x] == 'X') {
-                            move = true;
-                            y -= 1;
-                            //countX--;
                         } else if (data.get(y - 1)[x] == '#') {
                             turn = true;
                         }
@@ -118,14 +98,10 @@ public class Day06 {
                 }
                 case '>' -> {
                     if (x + 1 < data.get(y).length) {
-                        if (data.get(y)[x + 1] == '.') {
+                        if (data.get(y)[x + 1] == '.' || data.get(y)[x + 1] == 'X') {
                             move = true;
                             x += 1;
                             countX++;
-                        } else if (data.get(y)[x + 1] == 'X') {
-                            move = true;
-                            x+= 1;
-                            //countX--;
                         } else if (data.get(y)[x + 1] == '#') {
                             turn = true;
                         }
@@ -138,14 +114,10 @@ public class Day06 {
                 }
                 case 'v' -> {
                     if (y + 1 < data.size()) {
-                        if (data.get(y + 1)[x] == '.') {
+                        if (data.get(y + 1)[x] == '.' || data.get(y + 1)[x] == 'X') {
                             move = true;
                             y += 1;
                             countX++;
-                        } else if (data.get(y + 1)[x] == 'X') {
-                            move = true;
-                            y += 1;
-                            //countX--;
                         } else if (data.get(y + 1)[x] == '#') {
                             turn = true;
                         }
@@ -158,14 +130,10 @@ public class Day06 {
                 }
                 case '<' -> {
                     if (x - 1 >= 0) {
-                        if (data.get(y)[x - 1] == '.') {
+                        if (data.get(y)[x - 1] == '.' || data.get(y)[x - 1] == 'X') {
                             move = true;
                             x -= 1;
                             countX++;
-                        } else if (data.get(y)[x - 1] == 'X') {
-                            move = true;
-                            x -= 1;
-                            //countX--;
                         } else if (data.get(y)[x - 1] == '#') {
                             turn = true;
                         }
@@ -218,5 +186,35 @@ public class Day06 {
         }
 
         return data;
+    }
+
+    private int part2(ArrayList<char[]> data, int x, int y) throws FileNotFoundException {
+        File file = new File("src/day06/output.txt");
+        Scanner scanner = new Scanner(file);
+
+        ArrayList<char[]> outputPart1 = new ArrayList<>();
+        while (scanner.hasNextLine()) {
+            String line = scanner.nextLine();
+            char[] chars = new char[line.length()];
+            for (int i = 0; i < line.length(); i++) {
+                chars[i] = line.charAt(i);
+            }
+            outputPart1.add(chars);
+        }
+
+        int count = 0;
+
+        for (int i = 0; i < outputPart1.size(); i++) {
+            for (int j = 0; j < outputPart1.get(i).length; j++) {
+                if (outputPart1.get(i)[j]=='X' && data.get(i)[j]=='.'){
+                    ArrayList<char[]> copy = copy(data);
+                    copy.get(i)[j] = '#';
+                    if(createPath(copy,x,y) == -1){
+                        count++;
+                    }
+                }
+            }
+        }
+        return count;
     }
 }
