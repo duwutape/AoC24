@@ -1,10 +1,8 @@
 package day11;
 
-import org.w3c.dom.ls.LSOutput;
-
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
 
 public class Day11 {
@@ -24,46 +22,62 @@ public class Day11 {
         File input = new File("src/day11/input.txt");
         Scanner scanner = new Scanner(input);
 
-        ArrayList<ArrayList<Long>> stones = new ArrayList<>();
-        while (scanner.hasNextInt()){
-            ArrayList<Long> stone = new ArrayList<>();
-            stone.add((long)scanner.nextInt());
-            stones.add(stone);
+        HashMap<Long, Long> stones = new HashMap<>();
+        while (scanner.hasNextLong()) {
+            long num = scanner.nextLong();
+            if (stones.containsKey(num)) {
+                stones.put(num, stones.get(num) + 1);
+            } else {
+                stones.put(num, (long) 1);
+            }
         }
 
-        System.out.println(countLen(blink(stones,25)));
-        System.out.println(countLen(blink(stones,75)));
+        System.out.println(countLen(blink(stones, 25)));
+        System.out.println(countLen(blink(stones, 75)));
     }
 
-    private ArrayList<ArrayList<Long>> blink(ArrayList<ArrayList<Long>> allStones, int amount){
+    private HashMap<Long, Long> blink(HashMap<Long, Long> stones, int amount) {
         for (int i = 0; i < amount; i++) {
-            for (int j = 0; j < allStones.size(); j++) {
-                ArrayList<Long> newStones = new ArrayList<>();
-                ArrayList<Long> stones = allStones.get(j);
-                for (long stone : stones) {
-                    if (stone == 0) {
-                        newStones.add((long) 1);
-                    } else if (String.valueOf(stone).length() % 2 == 0) {
-                        String value = String.valueOf(stone);
-                        newStones.add(Long.parseLong(value.substring(0, value.length() / 2)));
-                        newStones.add(Long.parseLong(value.substring(value.length() / 2)));
+            HashMap<Long, Long> newStones = new HashMap<>();
+            for (long key : stones.keySet()) {
+                if (key == (long) 0) {
+                    if (newStones.containsKey((long) 1)) {
+                        newStones.put((long) 1, newStones.get((long) 1) + stones.get(key));
                     } else {
-                        newStones.add((stone * 2024));
+                        newStones.put((long) 1, stones.get(key));
+                    }
+                } else if (String.valueOf(key).length() % 2 == 0) {
+                    String value = String.valueOf(key);
+                    long sub1 = Long.parseLong(value.substring(0, value.length() / 2));
+                    long sub2 = Long.parseLong(value.substring(value.length() / 2));
+
+                    if (newStones.containsKey(sub1)) {
+                        newStones.put(sub1, newStones.get(sub1) + stones.get(key));
+                    } else {
+                        newStones.put(sub1, stones.get(key));
+                    }
+                    if (newStones.containsKey(sub2)) {
+                        newStones.put(sub2, newStones.get(sub2) + stones.get(key));
+                    } else {
+                        newStones.put(sub2, stones.get(key));
+                    }
+                } else {
+                    if (newStones.containsKey(key * 2024)) {
+                        newStones.put(key * 2024, newStones.get(key * 2024) + stones.get(key));
+                    } else {
+                        newStones.put(key * 2024, stones.get(key));
                     }
                 }
-                System.out.println(i);
-                allStones.remove(j);
-                allStones.add(j,newStones);
             }
-
+            stones = newStones;
         }
-        return allStones;
+        return stones;
     }
 
-    private int countLen(ArrayList<ArrayList<Long>> allStones){
-        int count = 0;
-        for (ArrayList<Long> stones : allStones) {
-            count += stones.size();
+    private long countLen(HashMap<Long, Long> stones) {
+        long count = 0;
+        for (long key : stones.keySet()) {
+            count += stones.get(key);
         }
         return count;
     }
