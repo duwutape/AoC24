@@ -28,7 +28,7 @@ public class Day11 {
             if (stones.containsKey(num)) {
                 stones.put(num, stones.get(num) + 1);
             } else {
-                stones.put(num, (long) 1);
+                stones.put(num, 1L);
             }
         }
 
@@ -40,11 +40,11 @@ public class Day11 {
         for (int i = 0; i < amount; i++) {
             HashMap<Long, Long> newStones = new HashMap<>();
             for (long key : stones.keySet()) {
-                if (key == (long) 0) {
-                    if (newStones.containsKey((long) 1)) {
-                        newStones.put((long) 1, newStones.get((long) 1) + stones.get(key));
+                if (key == 0L) {
+                    if (newStones.containsKey(1L)) {
+                        newStones.put(1L, newStones.get(1L) + stones.get(key));
                     } else {
-                        newStones.put((long) 1, stones.get(key));
+                        newStones.put(1L, stones.get(key));
                     }
                 } else if (String.valueOf(key).length() % 2 == 0) {
                     String value = String.valueOf(key);
